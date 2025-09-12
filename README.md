@@ -37,7 +37,7 @@ yarn lint
 Create a simple front-end application based on the provided figma mock ups. 
 
 - Your submission should be in the form of a Pull-Request.
-- Deployment is optional.
+- Deployment is optional, but encouraged.
 - Data is provided via a pre-compiled REST API, provided to you in your email from HR.
 - Commit messages should use [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/)
 
