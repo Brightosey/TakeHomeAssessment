@@ -54,7 +54,7 @@ Create a simple front-end application based on the provided figma mock ups.
 | DELETE | /users/1 |
 
 ### The Application should:
-- Show a filterable list of all users in the system. (Filter the list by the type of plan the user has).
+- Show a filterable list of all users in the system.
 - Show a detail display for a user when one is selected, where user info can be modified and saved.
 - Show a modal for creating a new user
 - Validate inputs before submitting forms
@@ -63,26 +63,24 @@ Create a simple front-end application based on the provided figma mock ups.
 - Use pinia for app state management.
 - 3rd party UI libraries are allowed. Feel free to use one of your choice. UI does not need to match the mockup exactly.
 - Add additional libraries as you wish.
-- For Avatars, we recommend using [dicebear](https://www.dicebear.com/styles/pixel-art/). Placeholder images are also acceptable.
-- Your time is valuable, please time-box your work. We don't expect you to work on this for more than a few hours.
-- If you can't complete the entire project in a reasonable amount of time, send us what you have. We can still assess your skills without 100% completion.
-- Unit tests are not required as part of this assessment.
+- For Avatars, please use  [dicebear](https://www.dicebear.com/styles/pixel-art/).
+- Unit tests are not *required* as part of this assessment.
 
 # Mockups
 ## Outline
-Your application should render a very basic list of users, and a detail pane showing user information. A user should be able to modify existing users, and create new users.
+Your application should render a very basic list of users, and a detail pane showing user information. You should be able to modify existing users, and create new users.
 
 ![User Details Page](public/394021448-e2cbe7fe-e248-4a17-b3bb-7eae24c271fa.png)
 
 ## User List
-The user list should show a filterable collection of user list objects.
+The user list should show a filterable collection of user from the provided API.
 
 ![image](public/394035220-17ecc77a-0309-4090-a827-ae11b8a4488c.png)
 
 ### Users should be able to:
 - Click an item in the list and see user details in the detail pane
-- Click the filter and be presented with a few options for filtering the list. (Plan type is a mandatory filter option, first and last name are optional)
-- Click the create new user button and be presented with a modal for creating a new user
+- Click the filter and be able to filter the list by plan type.
+- Click the "create new user" button and be presented with a modal for creating a new user
 
 ## Details Pane
 The details pane shows the detail of an individual user.
@@ -96,30 +94,30 @@ The details pane shows the detail of an individual user.
 - Save the user
 
 ## Filter Panel
-The filter panel is used for filtering the user list.
+The filter panel is used for filtering the user list. It will contain a dropdown and a search box.
 
 ![image](public/394034274-e8fef909-ff17-4b8d-bf7f-a2ad241fa322.png)
 
 ### Users should be able to:
 - Select from a list of Plan Types
-- (Optional) Type in a user first name
-- (Optional) Type in a user's last name
-- Click filter to apply the filter (or) have the list filtered automatically
+- Search by a string value
+- /have the list filtered immediately
 
 ## Create User Modal
 The create user modal is used for creating a new user and should include form validation.
 ![image](public/394021283-6cf698ac-581a-4920-8515-02e627c5ccbb.png)
 
 ### Users should be able to:
-- See a modal dialog containing fields for creating a new user (Profile picture is optional)
+- See a modal dialog containing fields for creating a new user
 - See a selector containing a list of Plans to choose from:
   - Free Plan
+  - Basic Plan
   - Pro Plan
-  - Trial
-- See a selector containing a list of Companies to choose from:
-  - Axiomworx
-  - Equinox Engineering
+  - Enterprise Plan
+- See a selector containing a list of Companies to choose from (Use a set of basic values):
   - Apple
+  - Microsoft
+  - Google
 - Validate inputs before saving
 - Click a save button to create the new user
 - See the list updated immediately with the new user
