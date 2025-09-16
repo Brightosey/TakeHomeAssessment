@@ -1,37 +1,3 @@
-<!-- <script setup>
-import SideBar from "./components/SideBar.vue";
-import UserDetail from "./components/UserDetail.vue";
-import UserFormModal from "./components/UserFormModal.vue";
-
-import useUserStore from "./store/users";
-import { storeToRefs } from "pinia";
-import { onMounted } from "vue";
-const userStore = useUserStore();
-
-const { users } = storeToRefs(userStore);
-const fetchUsers = () => {
-  return userStore.fetchUsers();
-};
-onMounted(() => {
-  //fetchUsers()
-  userStore.fetchUserByFirstName("Stefania");
-});
-</script>
-
-<template>
-  <main>
-    ...entrypoint
-    <p :id="'id'+index" v-for="(user, index) in users" :key="index">{{ user.first_name }} {{ user.last_name}} - {{ user.company }}</p>
-    <div class="layout">
-      <SideBar />
-      <UserDetail />
-      <UserFormModal v-if="showModal" />
-    </div>
-  </main>
-</template>
-
-<style scoped></style> -->
-
 <script setup>
 import { ref, onMounted } from "vue";
 import { storeToRefs } from "pinia";
@@ -57,8 +23,8 @@ onMounted(() => {
 
 <template>
   <main class="layout">
-    <SideBar @create-user="showModal = true" />
-    <UserDetail />
+    <SideBar class="sidebar" @create-user="showModal = true" />
+    <UserDetail class="detail" />
     <UserFormModal v-if="showModal" @close="showModal = false" />
   </main>
 </template>
@@ -66,6 +32,19 @@ onMounted(() => {
 <style scoped>
 .layout {
   display: flex;
+  width: 100%;
   min-height: 100vh;
+}
+
+.sidebar {
+  width: 30%; 
+  flex-shrink: 0; 
+  border-right: 1px solid #ddd;
+}
+
+.detail {
+  width: 70%; 
+  padding: 1rem;
+  background: #f9fbfd;
 }
 </style>
