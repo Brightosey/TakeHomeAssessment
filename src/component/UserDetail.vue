@@ -1,13 +1,31 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import useUserStore from "../store/users";
+import { computed, ref } from "vue";
 
 const userStore = useUserStore();
-const { selectedUser } = storeToRefs(userStore);
+const { selectedUser, users } = storeToRefs(userStore);
+const isLoading = ref(false);
+const isDeleting = ref(false);
 
-const saveUser = () => {
+const companies = computed(() => {
+  return [...new Set(users.value.map((user) => user.company))];
+});
+
+const saveUser = async () => {
   if (!selectedUser.value) return;
-  console.log("Saving user:", selectedUser.value);
+  isLoading.value = true;
+  await userStore.updateUser(selectedUser.value.id, selectedUser.value);
+  isLoading.value = false;
+};
+
+const deleteUser = async () => {
+  if (!selectedUser.value) return;
+  isDeleting.value = true;
+  await userStore.deleteUser(selectedUser.value.id);
+  isLoading.value = false;
+  selectedUser.value = null;
+  isDeleting.value = false;
 };
 </script>
 
@@ -52,10 +70,13 @@ const saveUser = () => {
         <div class="field">
           <label>Company *</label>
           <select v-model="selectedUser.company" required>
-            <option>Apple</option>
-            <option>Microsoft</option>
-            <option>Google</option>
-            <option>Axiom</option>
+            <option
+              v-for="company in companies"
+              :key="company"
+              :value="company"
+            >
+              {{ company }}
+            </option>
           </select>
         </div>
 
@@ -66,11 +87,14 @@ const saveUser = () => {
 
         <div class="field">
           <label>Phone *</label>
-          <input v-model="selectedUser.phone" required />
+          <input v-model="selectedUser.phone_number" required />
         </div>
 
         <div class="actions">
-          <button type="submit">Save</button>
+          <a class="delete" @click="deleteUser">{{
+            isDeleting ? "Deleting..." : "Delete"
+          }}</a>
+          <button type="submit">{{ isLoading ? "Saving..." : "Save" }}</button>
         </div>
       </form>
     </div>
@@ -95,7 +119,7 @@ const saveUser = () => {
   background: rgb(217, 235, 255);
   padding: 1rem;
   text-align: center;
-  border-radius: 6px;
+  border-radius: 6px 0 0 6px;
 }
 .avatar {
   width: 90%;
@@ -113,6 +137,8 @@ const saveUser = () => {
   flex: 1;
   padding: 1.5rem 2rem;
   background: rgb(240, 248, 255);
+  height: 100%;
+  overflow: auto;
 }
 .users-name {
   color: black;
@@ -150,11 +176,24 @@ form {
 
 .actions {
   text-align: right;
+  display: flex;
+  gap: 1em;
 }
 .actions button {
   background: #1976d2;
   width: 50%;
   color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.actions .delete {
+  background: #e43b4f;
+  width: 50%;
+  color: #fff;
+  text-align: center;
   border: none;
   padding: 0.6rem 1.2rem;
   border-radius: 4px;

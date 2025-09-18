@@ -13,13 +13,9 @@ const useUserStore = defineStore("users", {
     },
   },
   actions: {
-    setSelectedUser(user) {
-      this.selectedUser = user;
-    },
     async fetchUsers() {
       try {
         const request = await axios.get(this.baseUrl);
-        console.log(request);
         this.users = request.data;
       } catch (error) {
         console.log("error fetching data");
@@ -28,7 +24,7 @@ const useUserStore = defineStore("users", {
     async fetchUserById(id) {
       try {
         const request = await axios.get(`${this.baseUrl}/${id}`);
-        console.log(request.data);
+        this.selectedUser = request.data;
       } catch (error) {
         console.log("error fetching data");
       }
@@ -38,7 +34,7 @@ const useUserStore = defineStore("users", {
         const request = await axios.get(
           `${this.baseUrl}?first_name_like=${payload}`
         );
-        console.log(request.data);
+        // console.log(request.data);
       } catch (error) {
         console.log("error fetching data");
       }
@@ -47,7 +43,8 @@ const useUserStore = defineStore("users", {
       try {
         const request = await axios.post(this.baseUrl, payload);
         this.users.push(request.data);
-        return request.data;
+        this.selectedUser = request.data;
+        this.fetchUserById(request.data.id);
       } catch (error) {
         console.log("error creating user");
       }
@@ -56,7 +53,9 @@ const useUserStore = defineStore("users", {
     async updateUser(id, payload) {
       try {
         const request = await axios.put(`${this.baseUrl}/${id}`, payload);
-        return request.data;
+        this.users = this.users.map((user) =>
+          user.id === id ? request.data : user
+        );
       } catch (error) {
         console.log("error updating user");
       }
@@ -74,6 +73,7 @@ const useUserStore = defineStore("users", {
     async deleteUser(id) {
       try {
         const request = await axios.delete(`${this.baseUrl}/${id}`);
+        console.log(request.data);
         this.users = this.users.filter((user) => user.id !== id);
         return request.data;
       } catch (error) {
