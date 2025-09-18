@@ -1,44 +1,48 @@
 <script setup>
-import { ref } from "vue";
 import { storeToRefs } from "pinia";
 import useUserStore from "../store/users";
+import Filter from "./Filter.vue";
+import { ref, computed } from "vue";
 
 const emit = defineEmits(["create-user"]);
 const userStore = useUserStore();
 const { users, selectedUser } = storeToRefs(userStore);
+const isFilterMode = ref(false);
+const fistname = ref("");
+const lastname = ref("");
+const filter = ref("");
 
-const search = ref("");
-
-const handleSearch = () => {
-  if (search.value) {
-    userStore.fetchUserByFirstName(search.value);
-  } else {
-    userStore.fetchUsers();
-  }
+const selectUser = async (user) => {
+  const selectedUser = await userStore.fetchUserById(user.id);
 };
 
-const selectUser = (user) => {
-  userStore.setSelectedUser(user);
+const filteredUsers = computed(() => {
+  if (isFilterMode.value) {
+    return users.value.filter((user) => user.first_name.includes(fistname.value) && user.last_name.includes(lastname.value) && user.plan.includes(filter.value));
+  }
+  return users.value;
+});
+
+const applyFilters = (filteredUsers) => {
+  isFilterMode.value = true;
+  fistname.value = filteredUsers.firstName;
+  lastname.value = filteredUsers.lastName;
+  filter.value = filteredUsers.filter;
+  
+};
+
+const resetFilters = () => {
+  isFilterMode.value = false;
 };
 </script>
 
 <template>
   <aside class="sidebar">
-    <div class="header">
-      <span>Filter Users</span>
-    </div>
-
-    <input
-      class="search"
-      v-model="search"
-      placeholder="Search by name..."
-      @input="handleSearch"
-    />
-
+    <Filter @apply-filters="applyFilters" @reset-filters="resetFilters" /><br></br>
     <ul class="list">
       <li
       class="list-content"
-        v-for="user in users"
+        v-for="user in filteredUsers"
         :key="user.id"
         @click="selectUser(user)"
         :class="{ active: selectedUser && selectedUser.id === user.id }"
@@ -55,28 +59,12 @@ const selectUser = (user) => {
 
 <style scoped>
 .sidebar {
-  height: 100vh;
+  height: 90vh;
+  max-width: 250px;
   display: flex;
   flex-direction: column;
   background: #f8faff;
   border-right: 1px solid #ddd;
-}
-
-.header {
-  background: #1976d2;
-  color: #fff;
-  padding: 0.75rem 1rem;
-  font-weight: 600;
-  font-size: 14px;
-}
-
-.search {
-  margin: 0.75rem;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-  width: calc(100% - 1.5rem);
 }
 
 .list {
@@ -113,6 +101,7 @@ const selectUser = (user) => {
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
+  width: calc(100% - 3rem);
 }
 .new-btn:hover {
   background: #1259a5;
