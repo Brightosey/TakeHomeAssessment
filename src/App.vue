@@ -33,7 +33,7 @@ onMounted(() => {
 .layout {
   display: flex;
   width: 100%;
-  min-height: 100vh;
+  min-height: 100%;
 }
 
 .sidebar {
@@ -46,5 +46,6 @@ onMounted(() => {
   width: 70%; 
   padding: 1rem;
   background: #f9fbfd;
+  height: 90vh;
 }
 </style>
