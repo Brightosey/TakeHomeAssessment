@@ -34,7 +34,6 @@ const useUserStore = defineStore("users", {
         const request = await axios.get(
           `${this.baseUrl}?first_name_like=${payload}`
         );
-        // console.log(request.data);
       } catch (error) {
         console.log("error fetching data");
       }

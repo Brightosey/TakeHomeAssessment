@@ -15,24 +15,37 @@ const newUser = ref({
   company: "",
   phone_number: "",
 });
+
 const isLoading = ref(false);
 
 const companies = computed(() => {
   return [...new Set(users.value.map((user) => user.company))];
 });
 
-const saveNewUser = async () => {
+/* const saveNewUser = async () => {
   isLoading.value = true;
   await userStore.createUser(newUser.value);
   isLoading.value = false;
   emit("close");
+}; */
+
+const saveNewUser = async () => {
+  isLoading.value = true;
+  try {
+    await userStore.createUser(newUser.value);
+    emit("close");
+  } catch (error) {
+    console.log("Error saving data", error);
+  } finally {
+    isLoading.value = false;
+  }
 };
 </script>
 
 <template>
   <div class="modal-overlay" @click.self="emit('close')">
     <div class="modal">
-      <h2>Create New User</h2>
+      <h2 class="modal-header">Create New User</h2>
       <br />
       <p class="close" @click="emit('close')">x</p>
       <form @submit.prevent="saveNewUser">
@@ -97,6 +110,10 @@ const saveNewUser = async () => {
   width: 500px;
   height: fit-content;
   position: relative;
+}
+
+.modal-header {
+  color: black;
 }
 
 form {

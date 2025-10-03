@@ -12,12 +12,24 @@ const companies = computed(() => {
   return [...new Set(users.value.map((user) => user.company))];
 });
 
-const saveUser = async () => {
+/* const saveUser = async () => {
   if (!selectedUser.value) return;
   isLoading.value = true;
   await userStore.updateUser(selectedUser.value.id, selectedUser.value);
   isLoading.value = false;
-};
+}; */
+
+const saveUser = async () => {
+  if(!selectedUser.value) return;
+  isLoading.value = true;
+  try {
+    await userStore.updateUser(selectedUser.value.id, selectedUser.value);
+  } catch (error) {
+    console.log("Error saving user", error);
+  } finally {
+    isLoading.value = false;
+  }
+}
 
 const deleteUser = async () => {
   if (!selectedUser.value) return;
