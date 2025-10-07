@@ -77,6 +77,10 @@ const useUserStore = defineStore("users", {
       try {
         const request = await axios.delete(`${this.baseUrl}/${id}`);
         this.users = this.users.filter((user) => user.id !== id);
+
+        if (this.selectedUser?.id === id) {
+          this.selectedUser = null;
+        }
         return request.data;
       } catch (error) {
         console.log("error deleting user");

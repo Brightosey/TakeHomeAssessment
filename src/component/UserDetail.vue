@@ -8,7 +8,6 @@ const { selectedUser, users } = storeToRefs(userStore);
 const isLoading = ref(false);
 const isDeleting = ref(false);
 
-
 const saveUser = async () => {
   if (!selectedUser.value) return;
   isLoading.value = true;
@@ -26,7 +25,6 @@ const deleteUser = async () => {
   isDeleting.value = true;
   try {
     await userStore.deleteUser(selectedUser.value.id);
-    selectedUser.value = null;
   } catch (error) {
     console.log("Error deleting user", error);
   } finally {
