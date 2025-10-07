@@ -12,8 +12,8 @@ const useUserStore = defineStore("users", {
       return this.users;
     },
     companies() {
-      return [...new Set(this.users.map((user) => user.company))]
-    }
+      return [...new Set(this.users.map((user) => user.company))];
+    },
   },
   actions: {
     async fetchUsers() {
@@ -58,6 +58,7 @@ const useUserStore = defineStore("users", {
         this.users = this.users.map((user) =>
           user.id === id ? request.data : user
         );
+        this.selectedUser = request.data;
       } catch (error) {
         console.log("error updating user");
       }
