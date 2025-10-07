@@ -11,6 +11,9 @@ const useUserStore = defineStore("users", {
     getUsers() {
       return this.users;
     },
+    companies() {
+      return [...new Set(this.users.map((user) => user.company))]
+    }
   },
   actions: {
     async fetchUsers() {
@@ -72,7 +75,6 @@ const useUserStore = defineStore("users", {
     async deleteUser(id) {
       try {
         const request = await axios.delete(`${this.baseUrl}/${id}`);
-        console.log(request.data);
         this.users = this.users.filter((user) => user.id !== id);
         return request.data;
       } catch (error) {

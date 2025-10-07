@@ -18,16 +18,6 @@ const newUser = ref({
 
 const isLoading = ref(false);
 
-const companies = computed(() => {
-  return [...new Set(users.value.map((user) => user.company))];
-});
-
-/* const saveNewUser = async () => {
-  isLoading.value = true;
-  await userStore.createUser(newUser.value);
-  isLoading.value = false;
-  emit("close");
-}; */
 
 const saveNewUser = async () => {
   isLoading.value = true;
@@ -68,7 +58,7 @@ const saveNewUser = async () => {
 
         <select v-model="newUser.company" required>
           <option value="">Select Company</option>
-          <option v-for="company in companies" :key="company" :value="company">
+          <option v-for="(company, index) in userStore.companies" :key="index" :value="company">
             {{ company }}
           </option>
         </select>

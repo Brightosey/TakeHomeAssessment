@@ -8,19 +8,9 @@ const { selectedUser, users } = storeToRefs(userStore);
 const isLoading = ref(false);
 const isDeleting = ref(false);
 
-const companies = computed(() => {
-  return [...new Set(users.value.map((user) => user.company))];
-});
-
-/* const saveUser = async () => {
-  if (!selectedUser.value) return;
-  isLoading.value = true;
-  await userStore.updateUser(selectedUser.value.id, selectedUser.value);
-  isLoading.value = false;
-}; */
 
 const saveUser = async () => {
-  if(!selectedUser.value) return;
+  if (!selectedUser.value) return;
   isLoading.value = true;
   try {
     await userStore.updateUser(selectedUser.value.id, selectedUser.value);
@@ -29,15 +19,19 @@ const saveUser = async () => {
   } finally {
     isLoading.value = false;
   }
-}
+};
 
 const deleteUser = async () => {
   if (!selectedUser.value) return;
   isDeleting.value = true;
-  await userStore.deleteUser(selectedUser.value.id);
-  isLoading.value = false;
-  selectedUser.value = null;
-  isDeleting.value = false;
+  try {
+    await userStore.deleteUser(selectedUser.value.id);
+    selectedUser.value = null;
+  } catch (error) {
+    console.log("Error deleting user", error);
+  } finally {
+    isDeleting.value = false;
+  }
 };
 </script>
 
@@ -83,8 +77,8 @@ const deleteUser = async () => {
           <label>Company *</label>
           <select v-model="selectedUser.company" required>
             <option
-              v-for="company in companies"
-              :key="company"
+              v-for="(company, index) in userStore.companies"
+              :key="index"
               :value="company"
             >
               {{ company }}

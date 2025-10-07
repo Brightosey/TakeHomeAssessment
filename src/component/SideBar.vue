@@ -13,7 +13,7 @@ const lastname = ref("");
 const filter = ref("");
 
 const selectUser = async (user) => {
-  const selectedUser = await userStore.fetchUserById(user.id);
+  await userStore.fetchUserById(user.id);
 };
 
 const filteredUsers = computed(() => {
@@ -28,7 +28,6 @@ const applyFilters = (filteredUsers) => {
   fistname.value = filteredUsers.firstName;
   lastname.value = filteredUsers.lastName;
   filter.value = filteredUsers.filter;
-  
 };
 
 const resetFilters = () => {
@@ -51,7 +50,7 @@ const resetFilters = () => {
       </li>
     </ul>
 
-    <button class="new-btn" @click="$emit('create-user')">
+    <button class="new-btn" @click="emit('create-user')">
       + Create New User
     </button>
   </aside>

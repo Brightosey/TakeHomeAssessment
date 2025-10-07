@@ -8,7 +8,7 @@ import UserFormModal from "./component/UserFormModal.vue";
 import useUserStore from "./store/users";
 
 const userStore = useUserStore();
-const { users } = storeToRefs(userStore);
+const { users, selectedUser} = storeToRefs(userStore);
 
 const showModal = ref(false);
 
@@ -37,13 +37,13 @@ onMounted(() => {
 }
 
 .sidebar {
-  width: 30%; 
-  flex-shrink: 0; 
+  width: 30%;
+  flex-shrink: 0;
   border-right: 1px solid #ddd;
 }
 
 .detail {
-  width: 70%; 
+  width: 70%;
   padding: 1rem;
   background: #f9fbfd;
   height: 90vh;
