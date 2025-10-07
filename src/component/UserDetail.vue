@@ -1,7 +1,7 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import useUserStore from "../store/users";
-import { computed, ref } from "vue";
+import { ref } from "vue";
 
 const userStore = useUserStore();
 const { selectedUser, users } = storeToRefs(userStore);
