@@ -24,7 +24,7 @@ onMounted(() => {
 <template>
   <main class="layout">
     <SideBar class="sidebar" @create-user="showModal = true" />
-    <UserDetail class="detail" />
+    <UserDetail class="detail"/>
     <UserFormModal v-if="showModal" @close="showModal = false" />
   </main>
 </template>

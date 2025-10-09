@@ -98,7 +98,7 @@ const deleteUser = async () => {
           <a class="delete" @click="deleteUser">{{
             isDeleting ? "Deleting..." : "Delete"
           }}</a>
-          <button type="submit">{{ isLoading ? "Saving..." : "Save" }}</button>
+          <button type="submit" @click="saveUser">{{ isLoading ? "Saving..." : "Save" }}</button>
         </div>
       </form>
     </div>

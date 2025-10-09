@@ -16,10 +16,16 @@ const useUserStore = defineStore("users", {
     },
   },
   actions: {
+    sortUsers() {
+      this.users = [...this.users].sort((a, b) =>
+        a.first_name.localeCompare(b.first_name)
+      );
+    },
     async fetchUsers() {
       try {
         const request = await axios.get(this.baseUrl);
         this.users = request.data;
+        this.sortUsers();
       } catch (error) {
         console.log("error fetching data");
       }
@@ -32,21 +38,13 @@ const useUserStore = defineStore("users", {
         console.log("error fetching data");
       }
     },
-    async fetchUserByFirstName(payload) {
-      try {
-        const request = await axios.get(
-          `${this.baseUrl}?first_name_like=${payload}`
-        );
-      } catch (error) {
-        console.log("error fetching data");
-      }
-    },
+
     async createUser(payload) {
       try {
         const request = await axios.post(this.baseUrl, payload);
-        this.users.push(request.data);
+        this.users = [...this.users, request.data];
         this.selectedUser = request.data;
-        this.fetchUserById(request.data.id);
+        this.sortUsers();
       } catch (error) {
         console.log("error creating user");
       }
@@ -59,6 +57,7 @@ const useUserStore = defineStore("users", {
           user.id === id ? request.data : user
         );
         this.selectedUser = request.data;
+        this.sortUsers();
       } catch (error) {
         console.log("error updating user");
       }
